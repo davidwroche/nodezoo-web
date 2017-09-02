@@ -10,7 +10,7 @@
 <div id="form-buscar">
 <div class="form-group">
 <div class="input-group">
-<input id="1" class="form-control" type="text" name="search" v-model="query" v-on:click="clear" placeholder="Search..." autocomplete="off" required/>
+<input id="1" class="form-control" type="text" name="search" v-on:keyup.13="search" v-model="query" v-on:click="clear" placeholder="Search..." autocomplete="off" required/>
 <span class="input-group-btn">
 <button type="submit" class="btn btn-success" v-on:click="search">
 <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
