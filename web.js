@@ -2,8 +2,8 @@
 
 var hapi       = require('hapi')
 var vision     = require('vision')
-var inert      = require('inert')
-var handlebars = require('handlebars')
+var Inert      = require('inert')
+//var handlebars = require('handlebars')
 
 
 module.exports = function(options) {
@@ -12,37 +12,37 @@ module.exports = function(options) {
   var server = new hapi.Server()
   server.connection({port: options.port || 8000})
 
-  server.register( vision )
-  server.register( inert )
+  //server.register( vision )
+  server.register( Inert )
 
   var seneca = options.seneca
-  
+
   server.route({
     method: 'GET',
     path: '/{path*}',
     handler: {
       directory: {
-        path: folder + '/www',
+        path: "../www/dist/",
       }
     }
   })
 
-  server.views({
-    engines: { html: handlebars },
-    path: folder + '/www',
-    layout: true
-  })
+  // server.views({
+  //   engines: { html: handlebars },
+  //   path: folder + '/www',
+  //   layout: true
+  // })
 
-  server.route({ 
-    method: 'GET',
-    path: '/', 
-    handler: function (request, reply) {
-      reply.view('index', {title: 'nodezoo'})
-    }})
+  // server.route({
+  //   method: 'GET',
+  //   path: '/',
+  //   handler: function (request, reply) {
+  //     reply.view('index', {title: 'nodezoo'})
+  //   }})
 
 
-  server.route({ 
-    method: 'GET', path: '/info/{mod}', 
+  server.route({
+    method: 'GET', path: '/info/{mod}',
     handler: function( request, reply )
     {
       //server.
@@ -51,7 +51,7 @@ module.exports = function(options) {
           role: 'info',
           cmd: 'get',
           name: request.params.mod
-        }, 
+        },
         function (err, mod) {
           if( err ) {
             mod = {}
@@ -60,17 +60,14 @@ module.exports = function(options) {
           mod.no_npm = !mod.npm
           mod.no_github = !mod.github
 
-          reply.view('info',{
-            title: 'nodezoo - '+request.params.mod,
-            mod: mod
-          })
+          reply(mod)
         })
     }})
 
 
-  server.route({ 
+  server.route({
     method: 'GET',
-    path: '/api/query', 
+    path: '/api/query',
     handler: function (request, reply) {
       seneca.act(
         {
@@ -88,8 +85,8 @@ module.exports = function(options) {
     }})
 
 
-  server.route({ 
-    method: 'GET', path: '/api/suggest', 
+  server.route({
+    method: 'GET', path: '/api/suggest',
     handler: function( request, reply ){
         seneca.act(
         'role:suggest,cmd:suggest',{query:request.query.q,default$:[]},
