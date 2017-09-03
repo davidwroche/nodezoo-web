@@ -45,6 +45,11 @@ export default {
   },
   watch: {
     query: function(newVal) {
+      axios.get('/api/query?q=' + this.$data.query).then(response => {
+        this.$data.results = response.data.items
+      }).catch(function(error) {
+        console.log(error);
+      });
       axios.get('/api/suggest?q=' + this.$data.query).then(response => {
         var list = document.getElementById('suggestlist');
         document.getElementById('suggestlist').innerHTML = '';
@@ -62,6 +67,7 @@ export default {
     search() {
       this.$data.suggest = ''
       axios.get('api/query?q=' + this.$data.query).then(response => {
+        console.log(response.data.items)
         this.$data.results = response.data.items
       }).catch(function(error) {
         console.log(error);
