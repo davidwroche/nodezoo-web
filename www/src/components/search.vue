@@ -10,18 +10,14 @@
 <div id="form-buscar">
 <div class="form-group">
 <div class="input-group">
-<input id="1" class="form-control" type="text" name="search" v-on:keyup.13="search" v-model="query" v-on:click="clear" placeholder="Search..." autocomplete="off" required/>
+<input id="1" class="form-control" type="text" name="search" list="suggestlist" v-on:keyup.13="search" v-model="query" v-on:click="clear" placeholder="Search..." autocomplete="off" required/>
+<datalist id="suggestlist"></datalist>
 <span class="input-group-btn">
 <button type="submit" class="btn btn-success" v-on:click="search">
 <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
 </button>
 </span>
 </div>
-<span v-if="suggest.length > 0">
-  <li class="suggest" v-for="item in suggest" v-on:click="suggested(item, $event)">
-      <span>{{ item }}</span>
-  </li>
-</span>
 </div>
 
   <resultssection :results="results"></resultssection>
@@ -50,11 +46,13 @@ export default {
   watch: {
     query: function(newVal) {
       axios.get('/api/suggest?q=' + this.$data.query).then(response => {
-        if (response.data.length != 0) {
-          this.$data.suggest = response.data
-        } else {
-          this.$data.suggest = ''
-        }
+        var list = document.getElementById('suggestlist');
+        document.getElementById('suggestlist').innerHTML = '';
+        response.data.forEach(function(item){
+        var option = document.createElement('option');
+        option.value = item;
+        list.appendChild(option);
+      });
       }).catch(function(error) {
         console.log(error);
       });
