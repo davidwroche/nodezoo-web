@@ -17,20 +17,20 @@ module.exports = function init_hapi(options) {
 
   var seneca = options.seneca
   var handler = seneca.export('browser/handler')
-  
-  server.route({ 
-    method: 'POST', path: '/seneca', 
+
+  server.route({
+    method: 'POST', path: '/seneca',
     handler: function( request, reply ) {
       handler(request.payload, reply)
     }
   })
-  
+
   server.route({
     method: 'GET',
     path: '/{path*}',
     handler: {
       directory: {
-        path: folder + "/www/dist/",
+        path: folder + "/www/",
       }
     }
   })

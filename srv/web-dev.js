@@ -16,8 +16,8 @@ var init_hapi = require('../web.js')
 Seneca({tag: 'web', legacy: {transport: false}})
   .test('print')
 
-  .use('browser')
-  .listen({type:'browser', pin:'role:web'})
+  //.use('browser')
+  //.listen({type:'browser', pin:'role:web'})
 
   .use('seneca-repl', {port:10010})
 
@@ -28,13 +28,13 @@ Seneca({tag: 'web', legacy: {transport: false}})
   .client({pin:'role:info', port:9030})
   .client({pin:'role:suggest', port:9060})
 
-
-  .add('role:web,cmd:foo', function(msg, reply) {
-    reply({x:1})
-  })
-  .add('role:evil,cmd:foo', function(msg, reply) {
-    reply({y:1})
-  })
+  //
+  // .add('role:web,cmd:foo', function(msg, reply) {
+  //   reply({x:1})
+  // })
+  // .add('role:evil,cmd:foo', function(msg, reply) {
+  //   reply({y:1})
+  // })
 
 
   .ready(function(){
