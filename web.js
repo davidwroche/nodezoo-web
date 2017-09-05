@@ -6,7 +6,7 @@ var Inert      = require('inert')
 //var handlebars = require('handlebars')
 
 
-module.exports = function(options) {
+module.exports = function init_hapi(options) {
   var folder = options.folder || __dirname
 
   var server = new hapi.Server()
@@ -16,13 +16,21 @@ module.exports = function(options) {
   server.register( Inert )
 
   var seneca = options.seneca
-
+  var handler = seneca.export('browser/handler')
+  
+  server.route({ 
+    method: 'POST', path: '/seneca', 
+    handler: function( request, reply ) {
+      handler(request.payload, reply)
+    }
+  })
+  
   server.route({
     method: 'GET',
     path: '/{path*}',
     handler: {
       directory: {
-        path: "../www/dist/",
+        path: folder + "/www/dist/",
       }
     }
   })

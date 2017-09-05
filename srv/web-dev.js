@@ -10,11 +10,14 @@ var Seneca = require('seneca')
 
 
 // Build the frontend server using the hapi framework.
-var app = require('../web.js')
+var init_hapi = require('../web.js')
 
 
-Seneca({tag: 'web'})
+Seneca({tag: 'web', legacy: {transport: false}})
   .test('print')
+
+  .use('browser')
+  .listen({type:'browser', pin:'role:web'})
 
   .use('seneca-repl', {port:10010})
 
@@ -25,8 +28,17 @@ Seneca({tag: 'web'})
   .client({pin:'role:info', port:9030})
   .client({pin:'role:suggest', port:9060})
 
+
+  .add('role:web,cmd:foo', function(msg, reply) {
+    reply({x:1})
+  })
+  .add('role:evil,cmd:foo', function(msg, reply) {
+    reply({y:1})
+  })
+
+
   .ready(function(){
-    var server = app({seneca: this})
+    var server = init_hapi({seneca: this})
 
     this.log.info(server.info)
   })
