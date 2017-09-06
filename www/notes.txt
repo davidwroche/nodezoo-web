@@ -1,0 +1,6 @@
+- all css in separate files
+- must work offline
+- use v-cloak
+- organize into js, css, img folders
+
+

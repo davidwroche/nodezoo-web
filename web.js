@@ -16,12 +16,12 @@ module.exports = function init_hapi(options) {
   server.register( Inert )
 
   var seneca = options.seneca
-  var handler = seneca.export('browser/handler')
+  var browser_handler = seneca.export('browser/handler')
 
   server.route({
     method: 'POST', path: '/seneca',
     handler: function( request, reply ) {
-      handler(request.payload, reply)
+      browser_handler(request.payload, reply)
     }
   })
 
