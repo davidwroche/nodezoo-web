@@ -28,10 +28,15 @@ Seneca({tag: 'web', legacy: {transport: false}})
   .client({pin:'role:info', port:9030})
   .client({pin:'role:suggest', port:9060})
 
+  // .add('role:web,cmd:suggest', function (msg, reply) {
+  //   this.act({role:'suggest', cmd:'suggest', suggest:msg.suggest}, reply)
+  // })
 
   .add('role:web,cmd:query', function (msg, reply) {
     this.act({role:'search', cmd:'search', query:msg.query}, reply)
   })
+
+
 
   //
   // .add('role:web,cmd:foo', function(msg, reply) {

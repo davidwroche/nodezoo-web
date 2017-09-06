@@ -48,60 +48,60 @@ module.exports = function init_hapi(options) {
   //     reply.view('index', {title: 'nodezoo'})
   //   }})
 
-
-  server.route({
-    method: 'GET', path: '/info/{mod}',
-    handler: function( request, reply )
-    {
-      //server.
-        seneca.act(
-        {
-          role: 'info',
-          cmd: 'get',
-          name: request.params.mod
-        },
-        function (err, mod) {
-          if( err ) {
-            mod = {}
-          }
-
-          mod.no_npm = !mod.npm
-          mod.no_github = !mod.github
-
-          reply(mod)
-        })
-    }})
-
-
-  server.route({
-    method: 'GET',
-    path: '/api/query',
-    handler: function (request, reply) {
-      seneca.act(
-        {
-          role: 'search',
-          cmd: 'search',
-          query: request.query.q
-        },
-        function (err, out) {
-          if (err) {
-            out = {items: []}
-          }
-
-          reply(out)
-        })
-    }})
-
-
-  server.route({
-    method: 'GET', path: '/api/suggest',
-    handler: function( request, reply ){
-        seneca.act(
-        'role:suggest,cmd:suggest',{query:request.query.q,default$:[]},
-        function(err,out){
-          reply(out||[])
-        })
-    }})
+  //
+  // server.route({
+  //   method: 'GET', path: '/info/{mod}',
+  //   handler: function( request, reply )
+  //   {
+  //     //server.
+  //       seneca.act(
+  //       {
+  //         role: 'info',
+  //         cmd: 'get',
+  //         name: request.params.mod
+  //       },
+  //       function (err, mod) {
+  //         if( err ) {
+  //           mod = {}
+  //         }
+  //
+  //         mod.no_npm = !mod.npm
+  //         mod.no_github = !mod.github
+  //
+  //         reply(mod)
+  //       })
+  //   }})
+  //
+  //
+  // server.route({
+  //   method: 'GET',
+  //   path: '/api/query',
+  //   handler: function (request, reply) {
+  //     seneca.act(
+  //       {
+  //         role: 'search',
+  //         cmd: 'search',
+  //         query: request.query.q
+  //       },
+  //       function (err, out) {
+  //         if (err) {
+  //           out = {items: []}
+  //         }
+  //
+  //         reply(out)
+  //       })
+  //   }})
+  //
+  //
+  // server.route({
+  //   method: 'GET', path: '/api/suggest',
+  //   handler: function( request, reply ){
+  //       seneca.act(
+  //       'role:suggest,cmd:suggest',{query:request.query.q,default$:[]},
+  //       function(err,out){
+  //         reply(out||[])
+  //       })
+  //   }})
 
   server.start()
 
