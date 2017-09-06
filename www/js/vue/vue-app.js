@@ -1,7 +1,9 @@
-
 var seneca = Seneca()
-    .test('print')
-    .client({type:'browser', pin:'role:web'})
+  .test('print')
+  .client({
+    type: 'browser',
+    pin: 'role:web'
+  })
 
 
 // Start of Search Vue Instance
@@ -12,9 +14,16 @@ var vm1 = new Vue({
   },
   watch: {
     query() {
-      seneca.act({role:'web', cmd:'query', query:this.$data.query}, function(err, out) {
-        if(out && out.items) {
-          seneca.act({ann:'results', results:out.items})
+      seneca.act({
+        role: 'web',
+        cmd: 'query',
+        query: this.$data.query
+      }, function(err, out) {
+        if (out && out.items) {
+          seneca.act({
+            ann: 'results',
+            results: out.items
+          })
         }
       })
     },
@@ -26,7 +35,7 @@ var vm1 = new Vue({
       }).catch(function(error) {
         console.log(error);
       });
-      
+
       axios.get('/api/suggest?q=' + this.$data.query).then(response => {
         var list = document.getElementById('suggestlist');
         document.getElementById('suggestlist').innerHTML = '';
@@ -44,20 +53,20 @@ var vm1 = new Vue({
   methods: {
     search() {
       this.$data.suggest = ''
-/*
-      axios.get('api/query?q=' + this.$data.query).then(response => {
-        console.log(response.data.items)
-        vm2.results = response.data.items
-      }).catch(function(error) {
-        console.log(error);
-      });
-*/
+      /*
+            axios.get('api/query?q=' + this.$data.query).then(response => {
+              console.log(response.data.items)
+              vm2.results = response.data.items
+            }).catch(function(error) {
+              console.log(error);
+            });
+      */
     },
     suggested(item) {
       this.$data.query = item;
     },
-    clear(){
-      if(vm2.results.length > 0){
+    clear() {
+      if (vm2.results.length > 0) {
         vm2.results = ''
       }
     }
@@ -70,9 +79,9 @@ var vm2 = new Vue({
   data: {
     results: ''
   },
-  beforeCreate: function () {
+  beforeCreate: function() {
     var self = this
-    
+
     seneca
       .add('ann:results', function(msg, reply) {
         self.results = msg.results
@@ -89,6 +98,5 @@ var vm2 = new Vue({
 // Start of Suggest Vue Instance
 var vm3 = new Vue({
   el: '#suggest',
-  data: {
-  }
+  data: {}
 })
