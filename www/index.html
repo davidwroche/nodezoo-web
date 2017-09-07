@@ -7,16 +7,19 @@
 </head>
 
 <body>
+  <div class="container overlord">
   <!-- Start of Search Vue Instance -->
   <div id="search">
-    <div class="container" style="margin-top: 8%;">
-      <div class="col-md-12">
+    <div class="container">
         <div class="row">
           <div id="logo" class="text-center">
             <a href="#" class="logo"><img src="images/nodezoo.png"></a>
             <p>Search for <a href="http://nodejs.org">Node.js</a> modules.</p>
           </div>
+          </div>
+        </div>
           <div id="form-buscar">
+            <div class="container">
             <div class="form-group">
               <div class="input-group">
                 <input id="1" class="form-control" type="text" name="search" list="suggestlist" v-on:keyup.13="search" v-model="query" v-on:click="clear" placeholder="Search..." autocomplete="off" required/>
@@ -29,35 +32,66 @@
               </div>
             </div>
           </div>
-        </div>
+          </div>
       </div>
-    </div>
-  </div>
   <!-- End of Search Vue Instance -->
 
   <!-- Start of Results Vue Instance -->
   <div id="results" v-cloak>
-    <div class="container" style="margin-top: 8%;">
-      <div v-for="item in results">
-        <div class="panel panel-info">
-          <div class="panel-heading"><a :href="item.giturl">{{ item.name }}</a></div>
-          <div class="panel-body">
-            {{ item.version }}
-            <br> {{ item.desc }}
+    <div class="container" style="margin-top: 2%;">
+      <div class="col-md-12">
+        <div class="col-md-8">
+          <div v-for="item in results">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                  <div class="row">
+                  <div class="col-xs-6 text-left">
+                      <a :href="item.namelink"><h3>{{ item.name }}</h3>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <a :href="item.npmurl" class="logo"><img src="images/npm-small.png"></a>
+                    <a :href="item.giturl" class="logo"><img src="images/github-small.png"></a>
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                {{ item.version }}
+                <br> {{ item.desc }}
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="col-md-4">
+          <p class="point">Resources</p>
+          <p class="subpoint">The code for this engine, including the ranking algorithm, is all on the
+            <a href="https://github.com/rjrodger/nodezoo">nodezoo github repository</a>.
+          </p>
+          <p class="point">
+            Questions?</p>
+          <p class="subpoint"> Tweet me <a href="https://twitter.com/rjrodger">@rjrodger</a>.
+          </p>
         </div>
       </div>
     </div>
+
   </div>
+  <footer class="footer">
+    <div class="container">
+      <span class>Nodezoo</span>
+    </div>
+  </footer>
+</div>
   <!-- End of Results Vue Instance -->
 
 
   <div id="suggest">
+
   </div>
 
 
   <script src="js/seneca/seneca.js"></script>
   <script src="js/vue/vue.js"></script>
+  <script src="js/vue/vue-router.js"></script>
   <script src="js/vue/vue-app.js"></script>
 </body>
 

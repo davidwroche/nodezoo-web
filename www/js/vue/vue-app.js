@@ -17,13 +17,14 @@ var vm1 = new Vue({
 
       seneca.act({
         role: 'web',
-        cmd: 'query',
+        cmd: 'sug',
         query: this.$data.query
-      }, function(err, out) {
-        if (out && out.items) {
+      }, function(err, result) {
+        console.log(result)
+        if (result) {
           seneca.act({
             omar: 'suggestions',
-            suggestions: out.items
+            suggestions: result
           })
         }
       })
@@ -67,6 +68,28 @@ var vm2 = new Vue({
     seneca
       .add('ann:results', function(msg, reply) {
         self.results = msg.results
+        self.results.forEach(function(item) {
+          if(!item.hasOwnProperty(item.giturl)){
+            item.npmurl = "http://npmjs.com/package/" + item.name.toString()
+            item.namelink = item.npmurl
+          }
+
+          if('giturl'in item){
+            if (item.giturl.startsWith('git://')) {
+              var x = item.giturl.replace('git://', 'http://')
+              item.giturl = x
+              item.namelink = item.giturl
+            }
+            if (item.giturl.startsWith('git+')) {
+              var y = item.giturl.replace('git+', '')
+              item.giturl = y
+              item.namelink = item.giturl
+            }
+          }else{
+            item.npmurl = "http://npmjs.com/package/" + item.name.toString()
+            item.namelink = item.npmurl
+          }
+        })
         reply()
       })
       .add('claire:clear_results', function(msg, reply) {
@@ -92,16 +115,14 @@ var vm3 = new Vue({
     seneca
       .add('omar:suggestions', function(msg, reply) {
         self.suggest = msg.suggestions
-        console.log(self.suggest)
         reply()
-          var list = document.getElementById('suggestlist');
-          document.getElementById('suggestlist').innerHTML = '';
-          self.suggest.forEach(function(item){
-          console.log(item)
-          var option = document.createElement('option');
-          option.value = item.name;
-          list.appendChild(option);
-        });
+        //   var list = document.getElementById('suggestlist');
+        //   document.getElementById('suggestlist').innerHTML = '';
+        //   self.suggest.forEach(function(item){
+        //   var option = document.createElement('option');
+        //   option.value = item.name;
+        //   list.appendChild(option);
+        // });
       })
   }
 })

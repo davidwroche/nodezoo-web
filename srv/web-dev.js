@@ -28,24 +28,16 @@ Seneca({tag: 'web', legacy: {transport: false}})
   .client({pin:'role:info', port:9030})
   .client({pin:'role:suggest', port:9060})
 
-  // .add('role:web,cmd:suggest', function (msg, reply) {
-  //   this.act({role:'suggest', cmd:'suggest', suggest:msg.suggest}, reply)
-  // })
+  .add('role:web,cmd:sug', function (msg, reply) {
+    this.act('role:suggest,cmd:suggest',{query:msg.query,default$:[]},
+            function(err,out){
+            reply(out||[])
+      })
+  })
 
   .add('role:web,cmd:query', function (msg, reply) {
     this.act({role:'search', cmd:'search', query:msg.query}, reply)
   })
-
-
-
-  //
-  // .add('role:web,cmd:foo', function(msg, reply) {
-  //   reply({x:1})
-  // })
-  // .add('role:evil,cmd:foo', function(msg, reply) {
-  //   reply({y:1})
-  // })
-
 
   .ready(function(){
     var server = init_hapi({seneca: this})

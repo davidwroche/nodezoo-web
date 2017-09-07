@@ -3,4 +3,12 @@
 - use v-cloak
 - organize into js, css, img folders
 
+^
+All of this works offline now depending if you have some local info stuff pushed in first.
 
+
+
+
+---------
+Seneca suggest hits the server and shows data in the repl yet it doesn't
+respond with any.
