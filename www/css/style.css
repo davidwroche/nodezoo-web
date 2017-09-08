@@ -162,3 +162,10 @@ a {
     color: #72860F !important;
     text-decoration: none !important;
 }
+
+.fade-enter-active, .fade-leave-active {
+   transition: opacity 1s
+ }
+ .fade-enter, .fade-leave-active {
+   opacity: 0
+ }
