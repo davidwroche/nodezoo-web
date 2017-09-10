@@ -2,6 +2,7 @@
 
 <head>
   <!-- Latest compiled and minified CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -10,12 +11,16 @@
   <div class="container overlord">
     <!-- Start of Search Vue Instance -->
     <div id="search">
-      <span v-if="info" v-cloak>
+      <span v-cloak>
         <span v-if="layout1">
-          <button type="submit" class="btn btn-primary" v-on:click="layout"><i class="glyphicon glyphicon-info-sign" style="color:white"></i> Info</button>
+          <button class="btn btn-info btn-lg top-corner gly-spin" v-on:click="layout">
+            <span class="glyphicon glyphicon-info-sign fa-5x"></span>
+          </button>
         </span>
         <span v-else>
-          <button type="submit" class="btn btn-primary" v-on:click="revertLayout"><i class="glyphicon glyphicon-search" style="color:white"></i> Nodezoo Search</button>
+          <button class="btn btn-info btn-lg top-corner gly-spin" v-on:click="revertLayout">
+            <span class="glyphicon glyphicon-search search-menu fa-5x"></span>
+          </button>
         </span>
       </span>
 
@@ -52,17 +57,18 @@
     <div id="results" v-cloak v-show="layout2">
       <div class="container" style="margin-top: 2%;">
         <div class="col-md-12">
-          <div class="col-md-8">
+          <div class="col-md-10">
             <div v-for="item in results">
               <div class="panel panel-info">
                 <div class="panel-heading">
                   <div class="row">
                     <div class="col-xs-6 text-left">
-                      <a :href="item.namelink"><h3>{{ item.name }}</h3>
+                      <a :href="item.namelink"><h3>{{ item.name }}</h3></a>
                   </div>
                   <div class="col-xs-6 text-right">
+                    <span v-on:click="moduleInfo(item.name)"><img src="images/info.png"></span>
                     <a :href="item.npmurl" class="logo"><img src="images/npm-small.png"></a>
-                      <a :href="item.giturl" class="logo"><img src="images/github-small.png"></a>
+                    <a :href="item.giturl" class="logo"><img src="images/github-small.png"></a>
                     </div>
                   </div>
                 </div>
@@ -73,7 +79,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
             <p class="point">Resources</p>
             <p class="subpoint">The code for this engine, including the ranking algorithm, is all on the
               <a href="https://github.com/rjrodger/nodezoo">nodezoo github repository</a>.
@@ -122,27 +128,35 @@
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-xs-6 text-left">
-                    <h3>Github: {{ github.owner }}</h3>
+                    <img src="images/github-small.png">
+                    <h3 class="infoname">{{ github.owner }}</h3>
                 </div>
                 <div class="col-xs-6 text-right">
-                    <span><img src="images/star.png">{{github.stars}}</span>
-                    <span><img src="images/watch.png">{{github.watches}}</span>
-                     <span><img src="images/fork.png">{{github.forks}}</span>
+                  <div class="col-xs-4 text-left">
+                    <span class="infotext"><img src="images/star.png">{{github.stars}}</span>
+                  </div>
+                  <div class="col-xs-4 text-center">
+                    <span class="infotext"><img src="images/watch.png">{{github.watches}}</span>
+                  </div>
+                  <div class="col-xs-4 text-right">
+                    <span class="infotext"><img src="images/fork.png">{{github.forks}}</span>
                   </div>
                 </div>
               </div>
+              </div>
               <div class="panel-body">
-                <h3>Last Updated: {{ github.last }} </h3>
+                <h5>Last Updated: {{ github.last }} </h5>
               </div>
             </div>
             <div class="panel panel-info" v-if="npm">
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-xs-6 text-left">
-                    <h3>Npm: {{ npm.name }}</h3>
+                    <img src="images/npm-small.png">
+                    <h3 class="infoname">{{ npm.name }}</h3>
                 </div>
                 <div class="col-xs-6 text-right">
-                    <span>Version: {{npm.version}}</span>
+                    <span class="infoname">Version: {{npm.version}}</span>
                   </div>
                 </div>
               </div>
@@ -153,6 +167,11 @@
         </div>
       </div>
     </div>
+    <footer class="footer">
+      <div class="container">
+        <span class>Nodezoo</span>
+      </div>
+    </footer>
   </div>
 
 

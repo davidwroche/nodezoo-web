@@ -65,12 +65,12 @@ var vm1 = new Vue({
       vm2.$data.layout2 = true;
       vm3.$data.layout3 = true;
       vm4.$data.layout4 = false;
-    }
+    },
   },
   mounted: function() {
-    if (window.origin.toString() === 'http://' + 'localhost:8000') {
-      this.info = true;
-    }
+    // if (window.origin.toString() === 'http://' + 'localhost:8000') {
+    //   this.info = true;
+    // }
   }
 })
 
@@ -80,6 +80,28 @@ var vm2 = new Vue({
   data: {
     results: '',
     layout2: true
+  },
+  methods: {
+    moduleInfo(item){
+      var self = this;
+      seneca.act({
+        role: 'web',
+        cmd: 'info',
+        name: item
+      }, function(err, mod) {
+        console.log(mod)
+        if (mod) {
+          seneca.act({
+            ian: 'get_info',
+            name: mod
+          });
+        }
+      });
+      vm1.layout1 = false;
+      this.$data.layout2 = false;
+      vm3.$data.layout3 = false;
+      vm4.$data.layout4 = true;
+    },
   },
   beforeCreate: function() {
     var self = this
@@ -116,9 +138,6 @@ var vm2 = new Vue({
         reply()
       })
   },
-  methods: {
-
-  }
 })
 
 
@@ -178,7 +197,7 @@ var vm4 = new Vue({
     var self = this;
     seneca
       .add('ian:get_info', function(msg, reply) {
-        console.log(msg.name.github)
+        console.log(msg)
         self.github = msg.name.github
         self.npm = msg.name.npm
         reply()
