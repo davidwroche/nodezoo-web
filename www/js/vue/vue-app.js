@@ -183,7 +183,9 @@ var vm4 = new Vue({
     github: '',
     name: '',
     information: '',
-    layout4: false
+    layout4: false,
+    error: false,
+    nomatch:''
   },
   methods: {
     getInfo() {
@@ -206,8 +208,27 @@ var vm4 = new Vue({
     seneca
       .add('ian:get_info', function(msg, reply) {
         console.log(msg)
-        self.github = msg.name.github
-        self.npm = msg.name.npm
+        if(msg.name.no_github == true && msg.name.no_npm == false){
+          if(Object.keys(msg.name.npm).length == 3){
+            self.npm = ''
+            self.github = ''
+            self.error = true
+            self.nomatch = msg.name.npm.id
+          }else{
+            self.error = false
+            self.github = msg.name.github
+            self.npm = msg.name.npm
+          }
+        }else if(msg.name.no_github == true && msg.name.no_npm == true){
+          self.npm = ''
+          self.nomatch = ''
+          self.error = true
+          self.github = ''
+        }else{
+          self.error = false
+          self.github = msg.name.github
+          self.npm = msg.name.npm
+        }
         reply()
       })
   }

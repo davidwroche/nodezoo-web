@@ -4,8 +4,8 @@
   <!-- Latest compiled and minified CSS -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" type="text/css" href="css/media-queries.css">
+  <link rel="stylesheet" type="text/css" href="css/style.min.css">
+  <link rel="stylesheet" type="text/css" href="css/media-queries.min.css">
 </head>
 
 <body>
@@ -132,6 +132,11 @@
           <div class="container" style="margin-top: 2%;">
             <div class="col-md-12">
               <div class="col-md-8">
+                <div v-show="error">
+                  <div class="alert alert-danger">
+                    No matches found for</strong> {{nomatch}}</strong>
+                    </div>
+                </div>
                   <div class="panel panel-info" v-if="github">
                     <div class="panel-heading">
                       <div class="row">
