@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/media-queries.css">
 </head>
 
 <body>
@@ -13,15 +14,15 @@
     <div id="search">
       <span v-cloak>
         <span v-if="layout1">
-          <button class="btn btn-info btn-lg top-corner gly-spin" v-on:click="layout">
-            <span class="glyphicon glyphicon-info-sign fa-5x"></span>
-          </button>
-        </span>
-        <span v-else>
-          <button class="btn btn-info btn-lg top-corner gly-spin" v-on:click="revertLayout">
-            <span class="glyphicon glyphicon-search search-menu fa-5x"></span>
-          </button>
-        </span>
+          <button class="btn btn-info btn-lg top-corner" v-on:click="layout">
+            <span class="glyphicon glyphicon-info-sign spin-menu fa-5x"></span>
+      </button>
+      </span>
+      <span v-else>
+          <button class="btn btn-info btn-lg top-corner" v-on:click="revertLayout">
+            <span class="glyphicon glyphicon-search search-menu spin-menu fa-5x"></span>
+      </button>
+      </span>
       </span>
 
       <div class="container">
@@ -29,7 +30,7 @@
           <div id="logo" class="text-center">
             <a href="#" class="logo"><img src="images/nodezoo.png"></a>
             <p v-if="layout1">Search for <a href="http://nodejs.org">Node.js</a> modules.</p>
-            <p v-else="layout1" v-cloak>Inject github & npm data locally with Info service</p>
+            <p v-else="layout1" v-cloak>Manually inject entries <span class="gold">using the info service<span></p>
           </div>
         </div>
       </div>
@@ -45,30 +46,35 @@
     <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
     </button>
     </span>
-            </div>
           </div>
         </div>
       </div>
-      <!-- <transition> -->
     </div>
-    <!-- End of Search Vue Instance -->
+    <!-- <transition> -->
+  </div>
+  <!-- End of Search Vue Instance -->
 
-    <!-- Start of Results Vue Instance -->
-    <div id="results" v-cloak v-show="layout2">
-      <div class="container" style="margin-top: 2%;">
-        <div class="col-md-12">
-          <div class="col-md-10">
+  <!-- Start of Results Vue Instance -->
+  <div id="results" v-cloak v-show="layout2">
+    <div class="container" style="margin-top: 2%;">
+      <div class="col-md-12">
+          <div class="col-md-8">
+            <div v-show="matches">
+              <div class="alert alert-danger">
+                No matches found for</strong> {{nomatch}}</strong>
+                </div>
+            </div>
             <div v-for="item in results">
               <div class="panel panel-info">
                 <div class="panel-heading">
                   <div class="row">
                     <div class="col-xs-6 text-left">
-                      <a :href="item.namelink"><h3>{{ item.name }}</h3></a>
-                  </div>
-                  <div class="col-xs-6 text-right">
-                    <span v-on:click="moduleInfo(item.name)"><img src="images/info.png"></span>
-                    <a :href="item.npmurl" class="logo"><img src="images/npm-small.png"></a>
-                    <a :href="item.giturl" class="logo"><img src="images/github-small.png"></a>
+                      <a :href="item.namelink"><h3 class="infoname">{{ item.name }}</h3></a>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                      <span v-on:click="moduleInfo(item.name)"><img src="images/info.png"></span>
+                      <a :href="item.npmurl" class="logo"><img src="images/npm-small.png"></a>
+                      <a :href="item.giturl" class="logo"><img src="images/github-small.png"></a>
                     </div>
                   </div>
                 </div>
@@ -79,14 +85,16 @@
               </div>
             </div>
           </div>
-          <div class="col-md-2">
+        <div class="col-md-4">
+          <div class="col-xs-6 text-center">
             <p class="point">Resources</p>
             <p class="subpoint">The code for this engine, including the ranking algorithm, is all on the
-              <a href="https://github.com/rjrodger/nodezoo">nodezoo github repository</a>.
+              <a href="https://github.com/rjrodger/nodezoo" class="gold">nodezoo github repository</a>.
             </p>
+          </div>
+          <div class="col-xs-6 text-center">
             <p class="point">
-              Questions?</p>
-            <p class="subpoint"> Tweet me <a href="https://twitter.com/rjrodger">@rjrodger</a>.
+              Questions?</p><span class="subpoint"> Tweet me <a href="https://twitter.com/rjrodger" class="gold">@rjrodger</a>.
             </p>
           </div>
         </div>
@@ -96,89 +104,103 @@
     <footer class="footer">
       <div class="container">
         <span class>Nodezoo</span>
-      </div>
-    </footer>
-  </div>
-  <!-- End of Results Vue Instance -->
+          </div>
+          </footer>
+        </div>
+        <!-- End of Results Vue Instance -->
 
 
-  <div id="suggest" v-show="layout3">
+        <div id="suggest" v-show="layout3">
 
-  </div>
+        </div>
 
-  <div id="info" v-show="layout4" v-cloak>
-    <div id="form-buscar">
-      <div class="container">
-        <div class="form-group">
-          <div class="input-group">
-            <input id="1" class="form-control" type="text" v-model="name"  placeholder="Search..." autocomplete="off" required/>
-            <span class="input-group-btn">
+        <div id="info" v-show="layout4" v-cloak>
+          <div id="form-buscar">
+            <div class="container">
+              <div class="form-group">
+                <div class="input-group">
+                  <input id="1" class="form-control" type="text" v-model="name" v-on:keyup.13="getInfo" placeholder="Inject..." autocomplete="off" required/>
+                  <span class="input-group-btn">
   <button type="submit" class="btn btn-success" v-on:click="getInfo">
-  <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Info
+  <i class="glyphicon glyphicon-info-sign smaller" aria-hidden="true"></i> Info
   </button>
   </span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="container" style="margin-top: 2%;">
-      <div class="col-md-12">
-        <div class="col-md-8">
-            <div class="panel panel-info" v-if="github">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-6 text-left">
-                    <img src="images/github-small.png">
-                    <h3 class="infoname">{{ github.owner }}</h3>
-                </div>
-                <div class="col-xs-6 text-right">
-                  <div class="col-xs-4 text-left">
-                    <span class="infotext"><img src="images/star.png">{{github.stars}}</span>
+          <div class="container" style="margin-top: 2%;">
+            <div class="col-md-12">
+              <div class="col-md-8">
+                  <div class="panel panel-info" v-if="github">
+                    <div class="panel-heading">
+                      <div class="row">
+                        <div class="col-xs-6 text-left">
+                          <img src="images/github-small.png">
+                          <h3 class="infoname">{{ github.owner }}</h3>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                          <div class="col-xs-4 text-left">
+                            <span class="infotext"><img src="images/star.png">{{github.stars}}</span>
+                          </div>
+                          <div class="col-xs-4 text-center">
+                            <span class="infotext"><img src="images/watch.png">{{github.watches}}</span>
+                          </div>
+                          <div class="col-xs-4 text-right">
+                            <span class="infotext"><img src="images/fork.png">{{github.forks}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel-body">
+                      <h5>Last Updated: {{ github.last }} </h5>
+                    </div>
                   </div>
-                  <div class="col-xs-4 text-center">
-                    <span class="infotext"><img src="images/watch.png">{{github.watches}}</span>
+                  <div class="panel panel-info" v-if="npm">
+                    <div class="panel-heading">
+                      <div class="row">
+                        <div class="col-xs-6 text-left">
+                          <img src="images/npm-small.png">
+                          <h3 class="infoname">{{ npm.name }}</h3>
+                        </div>
+                        <div class="col-xs-6 text-center">
+                          <span class="infoversion">Version: {{npm.version}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel-body">
+                      <h5>{{ npm.desc }} </h5>
+                    </div>
                   </div>
-                  <div class="col-xs-4 text-right">
-                    <span class="infotext"><img src="images/fork.png">{{github.forks}}</span>
-                  </div>
-                </div>
               </div>
-              </div>
-              <div class="panel-body">
-                <h5>Last Updated: {{ github.last }} </h5>
+              <div class="col-md-4 stick">
+                <div class="col-xs-6 text-center">
+                  <p class="point">Resources</p>
+                  <p class="subpoint">The code for this engine, including the ranking algorithm, is all on the
+                    <a href="https://github.com/rjrodger/nodezoo" class="gold">nodezoo github repository</a>.
+                  </p>
+                </div>
+                <div class="col-xs-6 text-center">
+                  <p class="point">
+                    Questions?</p>
+                  <p class="subpoint"> Tweet me <a href="https://twitter.com/rjrodger" class="gold">@rjrodger</a>.
+                  </p>
+                </div>
               </div>
             </div>
-            <div class="panel panel-info" v-if="npm">
-              <div class="panel-heading">
-                <div class="row">
-                  <div class="col-xs-6 text-left">
-                    <img src="images/npm-small.png">
-                    <h3 class="infoname">{{ npm.name }}</h3>
-                </div>
-                <div class="col-xs-6 text-right">
-                    <span class="infoname">Version: {{npm.version}}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="panel-body">
-                <h5>{{ npm.desc }} </h5>
-              </div>
+          </div>
+          <footer class="footer">
+            <div class="container">
+              <span class>Nodezoo</span>
             </div>
+          </footer>
         </div>
-      </div>
-    </div>
-    <footer class="footer">
-      <div class="container">
-        <span class>Nodezoo</span>
-      </div>
-    </footer>
-  </div>
 
 
-  <script src="js/seneca/seneca.js"></script>
-  <script src="js/vue/vue.js"></script>
-  <script src="js/vue/vue-router.js"></script>
-  <script src="js/vue/vue-app.js"></script>
+        <script src="js/seneca/seneca.js"></script>
+        <script src="js/vue/vue.js"></script>
+        <script src="js/vue/vue-router.js"></script>
+        <script src="js/vue/vue-app.js"></script>
 </body>
 
 </html>

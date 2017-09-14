@@ -1,3 +1,4 @@
+/*All the main non minimized css is in this file*/
 @font-face {
     font-family: 'cinzel_decorativeregular';
     src: url('../fonts/cinzeldecorative-regular-webfont.woff2') format('woff2'),
@@ -114,7 +115,11 @@ li {
   color: #777778;
   font-size: 13px;
   padding-bottom: 25px;
-  border-bottom: 1px solid #b2b2b2
+  text-align: center !important;
+}
+
+.panel-body{
+  color: #72860F !important;
 }
 
 .panel-info {
@@ -159,11 +164,15 @@ li {
 }
 
 .panel-info:hover{
-  border-color: #D8807A;
+  border-color: #42D1E7;
+}
+
+.gold{
+  color: #72860F !important;
 }
 
 a {
-    color: #72860F !important;
+    color: #571B34 !important;
     text-decoration: none !important;
 }
 
@@ -191,19 +200,56 @@ a {
    border-color: #243058
  }
 
+ .smaller{
+   font-size: 1em !important;
+   color: white;
+ }
+
  .search-menu{
    font-size: 2.0em;
    color: #243058;
    border-color: #243058
- }
+}
 
- .gly-spin {
-   -webkit-animation: spin 2s infinite linear;
-   -moz-animation: spin 2s infinite linear;
-   -o-animation: spin 2s infinite linear;
-   animation: spin 2s infinite linear;
- }
+.spin-menu:hover{
+  -webkit-animation-name: spin;
+  -webkit-animation-duration: 4000ms;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: spin;
+  -moz-animation-duration: 4000ms;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  -ms-animation-name: spin;
+  -ms-animation-duration: 4000ms;
+  -ms-animation-iteration-count: infinite;
+  -ms-animation-timing-function: linear;
 
+  animation-name: spin;
+  animation-duration: 4000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@-ms-keyframes spin {
+  from { -ms-transform: rotate(0deg); }
+  to { -ms-transform: rotate(360deg); }
+}
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
+}
 
  .infoname{
    color: #72860F !important;
@@ -213,69 +259,3 @@ a {
    font-size: 22px;
    color: #72860F !important;
  }
-
-
- @media screen and (max-width: 360px) {
-   .infotext{
-     font-size: 10px;
-     color: #72860F !important;
-   }
-   .col-md-12{
-     padding-left: 0px;
-     padding-right: 0px;
-   }
-   .col-md-8{
-     padding-left: 0px;
-     padding-right: 0px;
-   }
- }
-
- @media screen and (max-width: 375px) {
-   .infotext{
-     font-size: 10px;
-     color: #72860F !important;
-   }
-   .col-md-12{
-     padding-left: 0px;
-     padding-right: 0px;
-   }
-   .col-md-8{
-     padding-left: 0px;
-     padding-right: 0px;
-   }
- }
-
- @-moz-keyframes spin {
-  0% {
-    -moz-transform: rotate(0deg);
-  }
-  100% {
-    -moz-transform: rotate(359deg);
-  }
-}
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-  }
-}
-@-o-keyframes spin {
-  0% {
-    -o-transform: rotate(0deg);
-  }
-  100% {
-    -o-transform: rotate(359deg);
-  }
-}
-@keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg;
-    transform: rotate(359deg);
-  }
-}

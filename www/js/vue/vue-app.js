@@ -34,17 +34,23 @@ var vm1 = new Vue({
 
   methods: {
     search() {
-
+      var self = this;
       seneca.act({
         role: 'web',
         cmd: 'query',
         query: this.$data.query
       }, function(err, out) {
-        if (out && out.items) {
+        console.log(out)
+        if (out.items.length != 0) {
           seneca.act({
             ann: 'results',
             results: out.items
           });
+        }else{
+          seneca.act({
+            noel: 'no_matches_found',
+            matches: self.query
+          })
         }
       })
     },
@@ -66,11 +72,6 @@ var vm1 = new Vue({
       vm3.$data.layout3 = true;
       vm4.$data.layout4 = false;
     },
-  },
-  mounted: function() {
-    // if (window.origin.toString() === 'http://' + 'localhost:8000') {
-    //   this.info = true;
-    // }
   }
 })
 
@@ -78,18 +79,19 @@ var vm1 = new Vue({
 var vm2 = new Vue({
   el: '#results',
   data: {
+    matches: false,
+    nomatch: '',
     results: '',
     layout2: true
   },
   methods: {
-    moduleInfo(item){
+    moduleInfo(item) {
       var self = this;
       seneca.act({
         role: 'web',
         cmd: 'info',
         name: item
       }, function(err, mod) {
-        console.log(mod)
         if (mod) {
           seneca.act({
             ian: 'get_info',
@@ -135,6 +137,12 @@ var vm2 = new Vue({
       })
       .add('claire:clear_results', function(msg, reply) {
         self.results = msg.results
+        self.matches = false
+        reply()
+      })
+      .add('noel:no_matches_found', function(msg, reply) {
+        self.nomatch = msg.matches
+        self.matches = true
         reply()
       })
   },
@@ -191,7 +199,7 @@ var vm4 = new Vue({
           });
         }
       });
-    }
+    },
   },
   beforeCreate: function() {
     var self = this;
