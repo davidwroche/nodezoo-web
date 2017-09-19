@@ -10,6 +10,30 @@ visit the [nodezoo/tao](//github.com/nodezoo/tao) repository.
 
 __This microservice provides the web functionality.__
 
+* The old nodezoo-web ui relied heavily on JQuery. That has been       removed and replaced with Vue.js. The interface is now split into multiple Vue instances. We are also using seneca-browser on the front end.
+
+* The old system had it's routes defined on the backend and within these calls we added our actions & patterns.
+
+* We don't use this approach in the new system and instead opt to use seneca-browser.
+
+On the frontend we pass all actions of __role:web__ to the backend client.
+
+
+```sh
+.client({type: 'browser',pin: 'role:web'})
+```
+
+On our backend we listen for
+
+```sh
+.listen({type:'browser',pin:'role:web'})
+```
+
+This lets us send all __role:web__ actions to the backend.
+
+However we can use actions that __aren't role:web__ on the frontend.
+
+We can __initialize seneca patterns in Vue.js lifecycle hooks__ as the app loads up then call these from any Vue instance by using a seneca action to call it.
 
 ## Running
 
